@@ -38,55 +38,59 @@ end
 # Get arguments
 
 if require_argument ARGV[0], help then
-  server_ip = ARGV[0]
-  # check if the port is included in the first argument
-  if server_ip.include? ':'
-    # the port is included in the first argument
-    server_port = server_ip.partition(':')[2]
-    server_ip = server_ip.partition(':')[0]
+  if ARGV[0] == "--help"
+    puts help
   else
-    # the port is not included in the first argument
-    server_port = ARGV[1] if ARGV[1].is_a? String
-  end
+    server_ip = ARGV[0]
+    # check if the port is included in the first argument
+    if server_ip.include? ':'
+      # the port is included in the first argument
+      server_port = server_ip.partition(':')[2]
+      server_ip = server_ip.partition(':')[0]
+    else
+      # the port is not included in the first argument
+      server_port = ARGV[1] if ARGV[1].is_a? String
+    end
 
-  if require_argument server_port, "You must provide a server port\n\n#{help}"
-    if server_port.is_a? String and server_ip.is_a? String then
-      # IP and port are provided; validate port
-      if server_port.is_num?
-        puts "Connecting to: #{server_ip}:#{server_port}..."
-        begin
-          connection = TCPSocket.new server_ip, server_port.to_i
-        rescue
-          puts "Connection failed"
-        end
-        if connection.is_a? TCPSocket then
-          puts "Connected to server, awaiting login request"
+    if require_argument server_port, "You must provide a server port\n\n#{help}"
+      if server_port.is_a? String and server_ip.is_a? String then
+        # IP and port are provided; validate port
+        if server_port.is_num?
+          puts "Connecting to: #{server_ip}:#{server_port}..."
+          begin
+            connection = TCPSocket.new server_ip, server_port.to_i
+          rescue
+            puts "Connection failed"
+          end
+          if connection.is_a? TCPSocket then
+            puts "Connected to server, awaiting login request"
 
-          # Handle receiving messages
-          Thread.new {
-            while true
-              inbound_message = connection.gets
-              puts inbound_message
-            end
-          }
-
-          # Handle sending messages
-          Thread.new {
-            while true
-              # print "ChatClient> "
-              outbound_message = STDIN.gets
-              # Exit if the user types /exit, /end, /finish, /quit, /q
-              # if ['/exit', '/end', '/finish', '/quit', '/q'].include? outbound_message
-              #   exit
-              # end
-              if outbound_message.chomp != ""
-                connection.puts outbound_message
+            # Handle receiving messages
+            Thread.new {
+              while true
+                inbound_message = connection.gets
+                puts inbound_message
               end
-            end
-          }
+            }
 
-          # Don't quit
-          while true
+            # Handle sending messages
+            Thread.new {
+              while true
+                # print "ChatClient> "
+                outbound_message = STDIN.gets
+                # Exit if the user types /exit, /end, /finish, /quit, /q
+                # if ['/exit', '/end', '/finish', '/quit', '/q'].include? outbound_message
+                #   exit
+                # end
+                if outbound_message.chomp != ""
+                  connection.puts outbound_message
+                end
+              end
+            }
+
+            # Don't quit
+            while true
+            end
           end
         end
       end

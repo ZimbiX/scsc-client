@@ -1,7 +1,7 @@
 scsc-client
 ===========
 
-A simple Ruby client for the Swinburne Cyber Security Club chat server
+A simple Ruby client for the Swinburne Cyber Security Club chat server. It's now multi-threaded to allow simultaneous receiving and sending of messages.
 
 ## Setup
 

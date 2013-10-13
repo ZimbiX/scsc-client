@@ -3,7 +3,7 @@ scsc-client
 
 A simple Ruby client for the Swinburne Cyber Security Club chat server
 
-#Setup
+## Setup
 
 Install Ruby 2.0.0 using RVM:
 
@@ -21,7 +21,7 @@ Obviously, download this client:
     git clone git@github.com/ZimbiX/scsc-client.git
     cd scsc-client
 
-# Usage
+## Usage
 
 Run the chat client (you can use a colon or a space between the IP and port:
 
@@ -37,4 +37,6 @@ Or to connect to the main SCSC server:
 
     ./chat_client.rb 54.254.172.116:9034
 
-When prompted, enter the password. The password for the main SCSC server is: BRAINS_ARE_PRETTY_NEAT
+When prompted, enter the password. The password for the main SCSC server is:
+
+> BRAINS_ARE_PRETTY_NEAT
